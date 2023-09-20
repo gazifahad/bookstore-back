@@ -8,13 +8,13 @@ app.get("/", (request, response) => {
   return response.status(234).send("welcome here");
 });
 
-app.listen(PORT, () => {
-  console.log(`app is running in portb No: ${PORT}`);
-});
 mongoose
   .connect(mongoDBURL)
   .then((result) => {
     console.log("app connected succesfully");
+    app.listen(PORT, () => {
+      console.log(`app is running in portb No: ${PORT}`);
+    });
   })
   .catch((err) => {
     console.log(err);
