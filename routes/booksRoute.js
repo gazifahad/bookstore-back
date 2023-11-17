@@ -51,7 +51,7 @@ router.get("/:id", async (request, response) => {
     response.status(500).send({ message: error.message });
   }
 });
-// route to update
+// route to update everything
 router.put("/:id", async (request, response) => {
   try {
     if (
