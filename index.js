@@ -1,36 +1,28 @@
 import express from "express";
+import cors from "cors";
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/BookModel.js";
+import booksRoute from "./routes/booksRoute.js";
 const app = express();
 app.use(express.json());
+
+// use cors middlewire for server safety from unauthorized request
+// this will allow every origin request
+app.use(cors());
+// allow custom origins
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"],
+//   })
+// );
+
+app.use("/books", booksRoute);
 app.get("/", (request, response) => {
   console.log(request);
   return response.status(234).send("welcome here");
-});
-// Route to save a new book
-app.post("/books", async (request, response) => {
-  try {
-    if (
-      !request.body.title ||
-      !request.body.author ||
-      !request.body.publishYear
-    ) {
-      return response.status(400).send({
-        message: "send all required fields",
-      });
-    }
-    const newBook = {
-      title: request.body.title,
-      author: request.body.author,
-      publishYear: request.body.publishYear,
-    };
-    const book = await Book.create(newBook);
-    return response.status(201).send(book);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).send({ message: error.message });
-  }
 });
 
 mongoose
